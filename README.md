@@ -34,3 +34,21 @@
      ```bash
      node server.js
      ```
+
+### Note:
+This application's code was entirely created using ChatGPT without writing a single line of code as a fun project. Thus, it might have limitations, but it surprisingly does the main job well, which is generating vectors from text prompts.
+
+**Core Features:**
+- Multi-Image Generation: Generate multiple images simultaneously, considering API limits per minute.
+- Size Selection: Specify the desired size for the output.
+- Prompt Styling: Create unique prompts to guide the model's output style.
+- Quality Settings: Adjust the quality of generated images.
+- Auto-Save Mode: Choose between automatic saving for images and SVGs or saving individual outputs as needed.
+
+### Problems/Limitations:
+  - AI-generated code structure may have limitations.
+  - Dependent on API limits for concurrent image generation.
+  - Output quality can vary based on prompt clarity.
+  - AI-generated code may lack optimization found in manually coded apps.
+  - API constraints limit the number of images generated per minute.
+  - Output quality influenced by prompt specificity.

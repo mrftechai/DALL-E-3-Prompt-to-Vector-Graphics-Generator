@@ -1,3 +1,5 @@
+<img src="previews/intor.gif" width="800">
+
 ### Setting Up the Project
 
 1. **Download the Project:**

@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Image Generator</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <!-- Add Font Awesome stylesheet -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha384-GLhlTQ8i04FZ5LOhZl5nMPA6STlQ0Dz2nDTh5F/wayA2SAqqjIr5VyooP5OAtJWj" crossorigin="anonymous">
+  <!-- Add Konva.js library -->
+  <script src="https://cdn.jsdelivr.net/npm/konva@7.0.5/konva.min.js"></script>
+</head>
+<body>
+  <div class="container">
+    <h1 class="display-4">AI Vector Generator</h1>
+    <form id="imageForm" class="row g-3">
+      <div class="col-md-12 mb-3">
+        <label for="imageData" class="form-label">Prompt:</label>
+        <textarea id="imageData" name="imageData" class="form-control" rows="4" required></textarea>
+      </div>
+    
+      <div class="col-md-3 mb-3">
+        <label for="parallelRequests" class="form-label">Number of Images:</label>
+        <input type="number" id="parallelRequests" name="parallelRequests" class="form-control" value="1" min="1" max="5">
+      </div>
+    
+      <div class="col-md-3 mb-3">
+        <label for="imageSize" class="form-label">Size:</label>
+        <select id="imageSize" name="imageSize" class="form-select">
+          <option value="1024x1024">1024x1024</option>
+          <option value="1024x1792">1024x1792</option>
+          <option value="1792x1024">1792x1024</option>
+        </select>
+      </div>
+    
+      <div class="col-md-3 mb-3">
+        <label for="style" class="form-label">Select Style:</label>
+        <select id="style" name="style" class="form-select">
+          <option value="default">Default</option>
+        </select>
+      </div>
+    
+      <div class="col-md-3 mb-3">
+        <label for="quality" class="form-label">Quality:</label>
+        <select id="quality" name="quality" class="form-select">
+          <option value="standard">Standard</option>
+          <option value="hd">Enhanced</option>
+        </select>
+      </div>
+
+      <div class="col-md-6 col-checkbox mb-3">
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" id="autoSavePNGCheckbox">
+          <label class="form-check-label" for="autoSavePNGCheckbox">Auto Save PNG</label>
+        </div>
+      </div>
+
+      <div class="col-md-6 col-checkbox mb-3">
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" id="autoSaveSVGCheckbox">
+          <label class="form-check-label" for="autoSaveSVGCheckbox">Auto Save SVG</label>
+        </div>
+      </div>
+      
+      <div class="col-md-12 mb-3" style="display: none;">
+        <label for="customDirectoryPath" class="form-label">Custom Directory Path:</label>
+        <input type="text" id="customDirectoryPath" name="customDirectoryPath" class="form-control" placeholder="Enter directory path">
+      </div>
+      
+      <!-- Collapsible Potrace Options -->
+      <div class="col-md-12 mb-3">
+        <button class="btn btn-link" type="button" data-bs-toggle="collapse" data-bs-target="#potraceOptions" aria-expanded="false" aria-controls="potraceOptions">
+          SVG Options <i class="fas fa-chevron-down"></i>
+        </button>
+      </div>
+      <div class="collapse" id="potraceOptions">
+        <div class="row g-3">
+          <div class="col-md-3 mb-3">
+            <label for="potraceThreshold" class="form-label">Threshold:</label>
+            <input type="number" id="potraceThreshold" class="form-control" value="128">
+          </div>
+
+          <div class="col-md-3 mb-3">
+            <label for="potraceTurdsize" class="form-label">Turdsize:</label>
+            <input type="number" id="potraceTurdsize" class="form-control" value="2">
+          </div>
+
+          <div class="col-md-3 mb-3">
+            <label for="potraceTurnPolicy" class="form-label">Turn Policy:</label>
+            <select id="potraceTurnPolicy" class="form-select">
+              <option value="minority">Minority</option>
+              <option value="black">Black</option>
+              <option value="white">White</option>
+              <option value="left">Left</option>
+              <option value="right">Right</option>
+              <option value="majority">Majority</option>
+            </select>
+          </div>
+
+          <div class="col-md-3 mb-3">
+            <label for="potraceAlphamax" class="form-label">Alphamax:</label>
+            <input type="number" step="0.1" id="potraceAlphamax" class="form-control" value="1.0">
+          </div>
+
+          <div class="col-md-3 mb-3">
+            <label for="potraceOpticurve" class="form-label">Optimize Curve:</label>
+            <input type="checkbox" id="potraceOpticurve" class="form-check-input" checked>
+          </div>
+
+          <div class="col-md-3 mb-3">
+            <label for="potraceOptolerance" class="form-label">Optimization Tolerance:</label>
+            <input type="number" step="0.1" id="potraceOptolerance" class="form-control" value="0.2">
+          </div>
+
+          <div class="col-md-3 mb-3">
+            <label for="potraceUnit" class="form-label">Unit:</label>
+            <input type="number" step="0.1" id="potraceUnit" class="form-control" value="1.0">
+          </div>
+
+          <div class="col-md-3 mb-3">
+            <label for="potraceGamma" class="form-label">Gamma:</label>
+            <input type="number" step="0.1" id="potraceGamma" class="form-control" value="1.0">
+          </div>
+
+          <div class="col-md-3 mb-3">
+            <label for="potraceBackend" class="form-label">Output Format:</label>
+            <select id="potraceBackend" class="form-select">
+              <option value="svg">SVG</option>
+              <option value="pdf">PDF</option>
+              <option value="eps">EPS</option>
+              <option value="ps">PostScript</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-12 mb-3">
+        <button type="button" class="btn btn-primary" onclick="generateImages()">Generate Images</button>
+      </div>
+    </form>
+    
+    <div id="result" class="result-container">
+      <!-- Image containers will be dynamically added here -->
+    </div>
+    
+    <div id="svgEditorContainer" style="display: none;">
+      <div class="svg-editor">
+        <div id="svgDisplay" class="svg-display"></div>
+        <div class="controls">
+          <label for="colorPicker">Color:</label>
+          <input type="color" id="colorPicker" value="#000000">
+          <label for="strokeSize">Stroke Size:</label>
+          <input type="number" id="strokeSize" value="2" min="1">
+          <button type="button" class="btn btn-secondary" onclick="saveSvg()">Save</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

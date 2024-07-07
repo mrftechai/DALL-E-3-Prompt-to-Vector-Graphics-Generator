@@ -36,7 +36,9 @@
      ```bash
      node server.js
      ```
- - [Example Prompts](https://github.com/mrftechai/DALL-E-3-Prompt-to-Vector-Generator/wiki/Example-Prompts)
+- [Video Guide](https://youtu.be/HzQ3B6KRImE)
+
+- [Example Prompts](https://github.com/mrftechai/DALL-E-3-Prompt-to-Vector-Generator/wiki/Example-Prompts)
 
 ### Note:
 This application's code was entirely created using ChatGPT without writing a single line of code as a fun project. Thus, it might have limitations, but it surprisingly does the main job well, which is generating vectors from text prompts.
